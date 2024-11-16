@@ -7,15 +7,14 @@ import javafx.scene.layout.HBox;
 public class Bullet extends ImageView {
 
     BulletHolder hb;
-   ImageView iv;
+
 
     public Bullet(BulletHolder hb){
+        super(new Image("bullet.png", true));
         this.hb = hb;
-        Image img = new Image("bullet.png", true);
-        iv = new ImageView(img);
-        iv.setFitWidth(80);
-        iv.setFitHeight(200);
-        hb.getChildren().add(iv);
+        this.setPreserveRatio(true);
+        this.setFitWidth(60);
+        hb.getChildren().add(this);
     }
 
 }

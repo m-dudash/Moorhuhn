@@ -5,6 +5,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
@@ -18,6 +19,7 @@ public class ShootScore extends Label{
         this.setLayoutX(en.getX());
         this.setLayoutY(en.getY());
         this.setFont(new Font("Arial", 20));
+        this.setTextFill(Color.WHITE);
         this.grp = en.grp;
         grp.getChildren().add(this);
         animStart();
@@ -31,7 +33,6 @@ public class ShootScore extends Label{
 
     private void move(){
         stav++;
-        System.out.println("STAV: "+stav);
         this.setLayoutY(this.getLayoutY() - 5);
         if(stav == 20){
             grp.getChildren().remove(this); //label disappears after 20 ticks.

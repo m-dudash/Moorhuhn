@@ -9,9 +9,12 @@ import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.media.MediaView;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -25,17 +28,27 @@ public class Main extends Application {
     public List<Enemy> enemies = new ArrayList<>();
     Random rnd = new Random();
     Group root;
+    Group enems;
     BulletHolder bullets;
+    MediaView mv;
 
     @Override
     public void start(Stage stage) {
         //project layers
         root = new Group();
         Group boards = new Group();
-        Group enems = new Group();
+        enems = new Group();
+        mv = new MediaView();
+
         root.getChildren().addAll(enems,boards);
 
-        Scene scene = new Scene(root, 1500, 770);
+        Scene scene = new Scene(root, 1070, 600);
+
+        ImageView background = new ImageView(new Image("Background.png"));
+        background.setPreserveRatio(true);
+        background.setFitHeight(scene.getHeight());
+
+        enems.getChildren().add(background);
 
         //Scoreboard
         Label board = new Label();
@@ -45,6 +58,7 @@ public class Main extends Application {
         board.setLayoutX(30);
 
 
+
         //Timer
         Timer t = new Timer();
         t.setLayoutX(scene.getWidth() - 80);
@@ -52,7 +66,8 @@ public class Main extends Application {
         boards.getChildren().addAll(board, t);
 
 
-        Enemy en = new Enemy(root, enemies);
+
+        Enemy en = new Enemy(enems, enemies, defineKind(), mv);
         scene.setOnMouseClicked(this::handleMouseClick);
 
 
@@ -63,9 +78,9 @@ public class Main extends Application {
 
 
         //Bullet holder
-        bullets = new BulletHolder(0);
-        bullets.setLayoutX(scene.getWidth() - 600);
-        bullets.setLayoutY(scene.getHeight() - 200);
+        bullets = new BulletHolder(0, mv);
+        bullets.setLayoutX(scene.getWidth() - 450);
+        bullets.setLayoutY(scene.getHeight() - 110);
         boards.getChildren().add(bullets);
 
 
@@ -99,20 +114,29 @@ public class Main extends Application {
         int n = rnd.nextInt(40);
         if(n == 5 && enemies.size() < 8){
             addEnemy();
-            System.out.println(enemies.size());
+            System.out.println("ghosts count: "+enemies.size());
         }
     }
 
     public void addEnemy(){
-        Enemy e = new Enemy(root, enemies);
+        Enemy e = new Enemy(enems, enemies, defineKind(), mv);
     }
+
+
+    //defining kind of the enemy (ghost)
+    public String defineKind(){
+        int n = rnd.nextInt(2);
+        if(n == 0) return "w";
+        return "d";
+    }
+
 
 
     //a method for flying all enemies
     public void moveAll() {
         for (Enemy e : new ArrayList<>(enemies)) { //Copy of the list to avoid deletion errors
             e.move();
-            if (e.getY() > root.getScene().getHeight()) {
+            if (e.death) {
                 e.del(enemies);
             }
         }
@@ -121,6 +145,7 @@ public class Main extends Application {
 
 //Method for increasing the range of the cursor
     private void handleMouseClick(MouseEvent event) {
+        bullets.shoot();
         double clickX = event.getX();
         double clickY = event.getY();
 
@@ -131,6 +156,7 @@ public class Main extends Application {
             double distance = Math.sqrt(Math.pow(clickX - enemyCenterX, 2) + Math.pow(clickY - enemyCenterY, 2));
 
             if (distance <= 50) {
+
                 enemy.hit();
                 break;
             }
@@ -138,7 +164,7 @@ public class Main extends Application {
                 System.out.println("MIMO");
             }
         }
-        bullets.shoot();
+
     }
 
 

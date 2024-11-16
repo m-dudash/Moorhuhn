@@ -1,6 +1,7 @@
 package sk.ukf.moorhuhn;
 
 import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
 
 public class ScoreBoard {
     //Class cannot be inherited from the Label due to static implementation errors  ( I tried :( )
@@ -10,6 +11,7 @@ public class ScoreBoard {
         this.lb = lb;
         score = 0;
         lb.setText("Scores: "+ score);
+        lb.setTextFill(Color.WHITE);
     }
 
     public static void up(int n){

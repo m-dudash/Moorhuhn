@@ -3,6 +3,7 @@
     import javafx.animation.KeyFrame;
     import javafx.animation.Timeline;
     import javafx.scene.control.Label;
+    import javafx.scene.paint.Color;
     import javafx.scene.text.Font;
     import javafx.util.Duration;
 
@@ -14,6 +15,7 @@
              super("60");
              this.n = 60;
              this.setFont(new Font("Arial", 40));
+             this.setTextFill(Color.WHITE);
              startTimer();
          }
 
