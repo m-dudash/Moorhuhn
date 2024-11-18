@@ -11,10 +11,12 @@
         int n;
         Label lb;
         Timeline tl;
-         public Timer(){
+        Game gm;
+         public Timer(Game gm){
              super("60");
+             this.gm = gm;
              this.n = 60;
-             this.setFont(new Font("Arial", 40));
+             this.setFont(Font.font("Pixelify Sans", 40));
              this.setTextFill(Color.WHITE);
              startTimer();
          }
@@ -28,5 +30,8 @@
          private void t(){
              n--;
              this.setText(""+n);
+             if(n <= 0){
+                 gm.gameOver(); //end of the game
+             }
          }
     }

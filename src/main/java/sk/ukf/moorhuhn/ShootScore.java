@@ -16,9 +16,9 @@ public class ShootScore extends Label{
 
     public ShootScore(Enemy en){
         super("" + en.hitScore);
-        this.setLayoutX(en.getX());
-        this.setLayoutY(en.getY());
-        this.setFont(new Font("Arial", 20));
+        this.setLayoutX(en.getX() + en.getFitWidth() / 2);
+        this.setLayoutY(en.getY() - 20);
+        this.setFont(Font.font("Pixelify Sans", 20));
         this.setTextFill(Color.WHITE);
         this.grp = en.grp;
         grp.getChildren().add(this);

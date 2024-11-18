@@ -50,6 +50,8 @@ public class Enemy extends ImageView {
         }
         this.setY(rnd.nextDouble(100, grp.getScene().getHeight() - 50));
 
+
+        //defining up fly (-1) or down fly (1)
         if(getY() > grp.getScene().getHeight()/2) this.dy = -1;
         else this.dy = 1;
 
@@ -79,7 +81,7 @@ public class Enemy extends ImageView {
 
 
     public void hit() {
-        if (d != 3 && BulletHolder.n > 0) {
+        if (d != 3 && BulletHolder.n >= 1) {
             int s = rnd.nextInt(3);
             pl("ghost_death_"+s);
             this.d = 3;
@@ -87,8 +89,10 @@ public class Enemy extends ImageView {
             ScoreBoard.up(hitScore);
             ShootScore sh = new ShootScore(this);  //creating a score over a shot enemy
         }
+
     }
 
+    //method for song playing
     private void pl(String f){
         String path = "src/main/resources/sounds/"+f+".mp3";
         Media shootSound = new Media(new File(path).toURI().toString());
@@ -106,7 +110,7 @@ public class Enemy extends ImageView {
 
 
     public void move(){
-        if(this.d != 3){
+        if(this.d != 3){    
             frame = (frame+1)%4;
             super.setImage(new Image("file:src/main/resources/sprites/"+kind+"Ghost"+frame+".png"));
         }
@@ -134,12 +138,13 @@ public class Enemy extends ImageView {
         }
 
 
-
+        //with probability 1/5 the ghost will fly higher or lower (depending on dy)
         int p = rnd.nextInt(5);
         if(p == 3) {
             this.setY((getY()) + dy * 8);
         }
 
+        //if you fly over the y boundary changes the y direction to the opposite
         if(this.getY() > grp.getScene().getHeight()-80 || this.getY() < 60){
             dy = -dy;
         }
